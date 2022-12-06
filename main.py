@@ -7,7 +7,6 @@ image = "blank_states_img.gif"
 screen.addshape(image)
 turtle.shape(image)
 
-game_is_on = True
 game_title = "Guess the State"
 correct_guesses = []
 
@@ -18,7 +17,7 @@ new_state.speed("normal")
 
 df = pandas.read_csv("50_states.csv")
 
-while game_is_on:
+while len(correct_guesses) < 50:
     answer_state = screen.textinput(title=game_title, prompt="What's another state's name?").title()
     state_row = df[df["state"] == answer_state]
     if len(state_row) > 0:
