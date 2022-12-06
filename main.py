@@ -16,11 +16,15 @@ new_state.hideturtle()
 new_state.speed("normal")
 
 df = pandas.read_csv("50_states.csv")
+all_states = df.state.to_list()
 
 while len(correct_guesses) < 50:
     answer_state = screen.textinput(title=game_title, prompt="What's another state's name?").title()
     state_row = df[df["state"] == answer_state]
     if answer_state == "Exit":
+        missed_states = [state for state in all_states if state not in correct_guesses]
+        missed_states_df = pandas.DataFrame(missed_states)
+        missed_states_df.to_csv("missed_states.csv")
         break
     if len(state_row) > 0:
         state_name = state_row.state.item()
@@ -30,19 +34,17 @@ while len(correct_guesses) < 50:
         game_title = f"{len(correct_guesses)}/50 States Correct"
 
 # write states not guessed to csv
-missed_states = {
-    "state": [],
-    "x": [],
-    "y": []
-}
-
-for state in df["state"]:
-    if state not in correct_guesses:
-        x_cor = df[df["state"] == state].x.item()
-        y_cor = df[df["state"] == state].y.item()
-        missed_states["state"].append(state)
-        missed_states["x"].append(x_cor)
-        missed_states["y"].append(y_cor)
-
-missed_states_df = pandas.DataFrame(missed_states)
-missed_states_df.to_csv("missed_states.csv")
+# missed_states = {
+#     "state": [],
+#     "x": [],
+#     "y": []
+# }
+#
+# for state in df["state"]:
+#     if state not in correct_guesses:
+#         x_cor = df[df["state"] == state].x.item()
+#         y_cor = df[df["state"] == state].y.item()
+#         missed_states["state"].append(state)
+#         missed_states["x"].append(x_cor)
+#         missed_states["y"].append(y_cor)
+#
